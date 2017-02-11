@@ -15,6 +15,6 @@ How to run?
 ```
 $ cd upwork
 $ go build
-$ ./upwork --action=categories
-$ ./upwork --action=jobs
+$ ./upwork --action=categories | jq
+$ ./upwork --action=jobs       | jq
 ```
