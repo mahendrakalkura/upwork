@@ -2,10 +2,10 @@ How to install?
 ===============
 
 ```
-$ mkdir Upwork
-$ cd Upwork
+$ mkdir upwork
+$ cd upwork
 $ git clone --recursive git@github.com:mahendrakalkura/upwork.git .
-$ cp config.json config.json.sample
+$ cp config.json.sample config.json
 $ go get
 ```
 
@@ -13,6 +13,8 @@ How to run?
 ===========
 
 ```
-$ cd Upwork
+$ cd upwork
 $ go build
+$ ./upwork --action=categories
+$ ./upwork --action=jobs
 ```
