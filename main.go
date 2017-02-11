@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"github.com/upwork/golang-upwork/api"
-	"github.com/upwork/golang-upwork/api/routers/auth"
+	"github.com/upwork/golang-upwork/api/routers/jobs/search"
+	"github.com/upwork/golang-upwork/api/routers/metadata"
 	"os"
 )
 
@@ -19,6 +21,27 @@ func main() {
 		token := client.GetAccessToken(verifier)
 		fmt.Println(token)
 	}
-	_, json := auth.New(client).GetUserInfo()
+
+	action := flag.String("action", "", "")
+	flag.Parse()
+	if *action == "categories" {
+		categories(client)
+	}
+	if *action == "jobs" {
+		jobs(client)
+	}
+
+}
+
+func categories(client api.ApiClient) {
+	_, json := metadata.New(client).GetCategoriesV2()
+	fmt.Println(string(json))
+}
+
+func jobs(client api.ApiClient) {
+	params := map[string]string{
+		"q": "",
+	}
+	_, json := search.New(client).Find(params)
 	fmt.Println(string(json))
 }
