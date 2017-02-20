@@ -1,0 +1,16 @@
+[sentry]
+dsn = "..."
+
+[sqlx]
+database = "upwork"
+hostname = "0.0.0.0"
+password = "..."
+port = "5432"
+username = "..."
+
+[upwork]
+access_secret = "..."
+access_token = "..."
+consumer_key = "..."
+consumer_secret = "..."
+debug = "off"
