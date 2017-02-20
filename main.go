@@ -1,47 +1,30 @@
 package main
 
 import (
-	"bufio"
 	"flag"
-	"fmt"
-	"github.com/upwork/golang-upwork/api"
-	"github.com/upwork/golang-upwork/api/routers/jobs/search"
-	"github.com/upwork/golang-upwork/api/routers/metadata"
-	"os"
+	"github.com/getsentry/raven-go"
 )
 
 func main() {
-	config := api.ReadConfig("config.json")
-	client := api.Setup(config)
-	if !client.HasAccessToken() {
-		url := client.GetAuthorizationUrl("")
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Println(url)
-		verifier, _ := reader.ReadString('\n')
-		token := client.GetAccessToken(verifier)
-		fmt.Println(token)
-	}
+	settings := get_settings()
+
+	raven.SetDSN(settings.Raven.Dsn)
 
 	action := flag.String("action", "", "")
 	flag.Parse()
+	if *action == "bootstrap" {
+		bootstrap(settings)
+	}
 	if *action == "categories" {
-		categories(client)
+		categories(settings)
 	}
 	if *action == "jobs" {
-		jobs(client)
+		jobs(settings)
 	}
-
-}
-
-func categories(client api.ApiClient) {
-	_, json := metadata.New(client).GetCategoriesV2()
-	fmt.Println(string(json))
-}
-
-func jobs(client api.ApiClient) {
-	params := map[string]string{
-		"q": "",
+	if *action == "skills" {
+		skills(settings)
 	}
-	_, json := search.New(client).Find(params)
-	fmt.Println(string(json))
+	if *action == "ui" {
+		ui(settings)
+	}
 }
