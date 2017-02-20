@@ -30,8 +30,9 @@ func categories(settings *Settings) {
 			titles_and_sub_titles, title_and_sub_title,
 		)
 	}
-
-	categories_prune(database, titles_and_sub_titles)
+	if len(titles_and_sub_titles) > 0 {
+		categories_prune(database, titles_and_sub_titles)
+	}
 }
 
 func get_categories(settings *Settings) []Category {
@@ -43,7 +44,7 @@ func get_categories(settings *Settings) []Category {
 		raven.CaptureErrorAndWait(err, nil)
 	}
 	categories := []Category{}
-	for _, parent := range upwork_categories.Items {
+	for _, parent := range upwork_categories.Categories {
 		for _, child := range parent.Topics {
 			category := Category{
 				Title:    parent.Title,

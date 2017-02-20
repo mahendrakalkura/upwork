@@ -24,7 +24,9 @@ func skills(settings *Settings) {
 	for _, skill := range skills {
 		titles = append(titles, skill.Title)
 	}
-	skills_prune(database, titles)
+	if len(titles) > 0 {
+		skills_prune(database, titles)
+	}
 }
 
 func get_skills(settings *Settings) []Skill {
@@ -36,7 +38,7 @@ func get_skills(settings *Settings) []Skill {
 		raven.CaptureErrorAndWait(err, nil)
 	}
 	skills := []Skill{}
-	for _, title := range upwork_skills.Items {
+	for _, title := range upwork_skills.Skills {
 		skill := Skill{
 			Title:  title,
 			Status: "On",

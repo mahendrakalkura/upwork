@@ -61,7 +61,7 @@ func bootstrap(settings *Settings) {
         client_jobs_posted INTEGER NOT NULL,
         client_past_hires INTEGER NOT NULL,
         client_reviews_count INTEGER NOT NULL,
-        date_created TIMESTAMP WITHOUT TIME ZONE,
+        date_created TEXT NOT NULL,
         duration TEXT NOT NULL,
         job_status TEXT NOT NULL,
         job_type TEXT NOT NULL,
@@ -117,13 +117,80 @@ func bootstrap(settings *Settings) {
     CREATE INDEX jobs_workload ON jobs USING BTREE (workload);
 
     CREATE FUNCTION categories_insert
-    (title_value TEXT, sub_title_value TEXT, status_value TEXT) RETURNS
-    VOID AS
+    (title_value TEXT, sub_title_value TEXT, status_value TEXT) RETURNS VOID AS
     $$
         BEGIN
             INSERT INTO categories (title, sub_title, status) VALUES
             (title_value, sub_title_value, status_value) ON CONFLICT
             (title, sub_title) DO NOTHING;
+        END;
+    $$
+    LANGUAGE plpgsql;
+
+    CREATE FUNCTION jobs_insert
+    (
+        budget_value INTEGER,
+        category_value TEXT,
+        client_country_value TEXT,
+        client_feedback_value NUMERIC(3, 2),
+        client_jobs_posted_value INTEGER,
+        client_past_hires_value INTEGER,
+        client_reviews_count_value INTEGER,
+        date_created_value TEXT,
+        duration_value TEXT,
+        job_status_value TEXT,
+        job_type_value TEXT,
+        skills_value JSONB,
+        snippet_value TEXT,
+        sub_category_value TEXT,
+        title_value TEXT,
+        url_value TEXT,
+        workload_value TEXT
+    )
+    RETURNS VOID AS
+    $$
+        BEGIN
+            INSERT INTO jobs
+            (
+                budget,
+                category,
+                client_country,
+                client_feedback,
+                client_jobs_posted,
+                client_past_hires,
+                client_reviews_count,
+                date_created,
+                duration,
+                job_status,
+                job_type,
+                skills,
+                snippet,
+                sub_category,
+                title,
+                url,
+                workload
+            )
+            VALUES
+            (
+                budget_value,
+                category_value,
+                client_country_value,
+                client_feedback_value,
+                client_jobs_posted_value,
+                client_past_hires_value,
+                client_reviews_count_value,
+                date_created_value,
+                duration_value,
+                job_status_value,
+                job_type_value,
+                skills_value,
+                snippet_value,
+                sub_category_value,
+                title_value,
+                url_value,
+                workload_value
+            )
+            ON CONFLICT (url) DO NOTHING;
         END;
     $$
     LANGUAGE plpgsql;
