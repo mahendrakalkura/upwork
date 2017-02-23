@@ -30,6 +30,12 @@ type SettingsUpwork struct {
 	Debug          string `toml:"debug"`
 }
 
+type Parameters struct {
+	JobType  string
+	Duration string
+	Workload string
+}
+
 type UpworkCategories struct {
 	Categories []UpworkCategoriesCategory `json:"categories"`
 }
