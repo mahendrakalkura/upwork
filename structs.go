@@ -8,6 +8,7 @@ type Settings struct {
 	Raven  SettingsRaven  `toml:"raven"`
 	SQLX   SettingsSQLX   `toml:"sqlx"`
 	Upwork SettingsUpwork `toml:"upwork"`
+	Others SettingsOthers `toml:"others"`
 }
 
 type SettingsRaven struct {
@@ -30,10 +31,8 @@ type SettingsUpwork struct {
 	Debug          string `toml:"debug"`
 }
 
-type Parameters struct {
-	JobType  string
-	Duration string
-	Workload string
+type SettingsOthers struct {
+	Consumers int `toml:"consumers"`
 }
 
 type UpworkCategories struct {
@@ -49,12 +48,23 @@ type UpworkCategoriesCategoryTopic struct {
 	Title string `json:"title"`
 }
 
-type UpworkJobs struct {
-	Jobs   []Job            `json:"jobs"`
-	Paging UpworkJobsPaging `json:"paging"`
+type UpworkJobsRequest struct {
+	Count      int64
+	DaysPosted int64
+	Duration   string
+	JobStatus  string
+	JobType    string
+	Offset     int64
+	Q          string
+	Workload   string
 }
 
-type UpworkJobsPaging struct {
+type UpworkJobsResponse struct {
+	Jobs   []Job                    `json:"jobs"`
+	Paging UpworkJobsResponsePaging `json:"paging"`
+}
+
+type UpworkJobsResponsePaging struct {
 	Offset int64 `json:"offset"`
 	Count  int64 `json:"count"`
 	Total  int64 `json:"total"`

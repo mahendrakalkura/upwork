@@ -44,6 +44,11 @@ func get_database(settings *Settings) *sqlx.DB {
 	return database
 }
 
+func get_paging(offset int64, count int64) string {
+	paging := fmt.Sprintf("%d;%d", offset, count)
+	return paging
+}
+
 func get_settings() *Settings {
 	var settings = &Settings{}
 	_, err := toml.DecodeFile("settings.toml", settings)
